@@ -12,21 +12,24 @@ export class AuthorisationInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    let that = this;
-    let ser = (<any>this.adal).context;
-    let observer;
-    let result = new Observable<HttpEvent<any>>((obs) => { observer = obs });
-    result.subscribe();
-    let resource = ser.getResourceForEndpoint(req.url);
-    ser.acquireToken(resource, (err, token) => {
-      const authReq = req.clone({ headers: req.headers.set("Authorization", 'Bearer ' + token) });
-      next.handle(authReq)
-        .catch((error, caught) => {
-          return Observable.throw(error);
-        }).subscribe((res) =>
-          observer.next(res));
-    });
-    return result;
+    let context = (<any>this.adal).context;
+    let resource = context.getResourceForEndpoint(req.url);
+    if (resource) {
+      let observer;
+      let result = new Observable<HttpEvent<any>>((obs) => { observer = obs });
+      result.subscribe();
+      context.acquireToken(resource, (err, token) => {
+        const authReq = req.clone({ headers: req.headers.set("Authorization", 'Bearer ' + token) });
+        next.handle(authReq)
+          .catch((error, caught) => {
+            return Observable.throw(error);
+          }).subscribe((res) =>
+            observer.next(res));
+      });
+      return result;
+    } else {
+      return next.handle(req);
+    }
   }
 }
 
