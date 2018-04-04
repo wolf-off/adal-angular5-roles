@@ -17,6 +17,7 @@ export class AuthorisationService {
     public init(config) {
         this.config = config;
         this.adal.init(config);
+        (<any>this.adal).context.handleWindowCallback();
         this.getData();
     }
 
@@ -55,8 +56,6 @@ export class AuthorisationService {
 
     public getData(): Promise<any> {
         let ser = (<any>this.adal).context;
-
-        ser.handleWindowCallback();
 
         if (!this.adal.isAuthenticated) {
             this.adal.login();
