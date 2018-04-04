@@ -14,11 +14,6 @@ export { AuthorisationGuard } from './guards/authorisation-guard';
     HttpClientModule
   ],
   declarations: [],
-  // exports: [
-  //   AuthorisationService,
-  //   AuthorisationInterceptor,
-  //   AuthorisationGuard
-  // ],
   providers: [
     HttpClientModule,
     AuthorisationService,

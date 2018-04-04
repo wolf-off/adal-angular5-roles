@@ -1,6 +1,6 @@
 {
-  "name": "adal-angular5-role",
-  "version": "0.0.12",
+  "name": "ccs-security-ng5",
+  "version": "0.0.15",
   "license": "MIT",
   "private": false,
   "dependencies": {

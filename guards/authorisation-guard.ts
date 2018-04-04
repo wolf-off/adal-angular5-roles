@@ -1,13 +1,12 @@
 import { Injectable } from '@angular/core';
 
 import { Router, CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, NavigationExtras } from '@angular/router';
-import { AdalService } from '../services/adal-service';
 import { AuthorisationService } from '../services/authorisation-service';
 
 @Injectable()
 export class AuthorisationGuard implements CanActivate {
 
-    constructor(private router: Router, private adalService: AdalService, private service: AuthorisationService) {
+    constructor(private router: Router, private service: AuthorisationService) {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
@@ -40,14 +39,6 @@ export class AuthorisationGuard implements CanActivate {
                 }).catch(r => resolve(false));
             }).catch(r => resolve(false));
         });
-
-        // const navigationExtras: NavigationExtras = {
-        //     queryParams: { 'redirectUrl': route.url }
-        // };
-
-        // if (!this.adalService.userInfo) {
-        //     this.router.navigate(['login'], navigationExtras);
-        // }
 
         return result;
     }
