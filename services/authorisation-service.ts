@@ -10,7 +10,7 @@ export class AuthorisationService {
 
     roles: Array<string>[] = null
     privileges: Array<string>[] = null;
-    promise: Promise<boolean>;
+    promise: Promise<any>;
     data: any = null;
     config: any = {};
 
@@ -71,7 +71,7 @@ export class AuthorisationService {
 
         let that = this;
 
-        let promise = new Promise<Array<string>>(function (resolve, reject) {
+        this.promise = new Promise<any>(function (resolve, reject) {
 
             let headers = new HttpHeaders();
             headers = headers.set('Ocp-Apim-Subscription-Key', that.config.ocpApimSubscriptionKey);
@@ -82,7 +82,7 @@ export class AuthorisationService {
                     resolve(<Array<string>>((<any>data).Result));
                 });
         });
-        return promise;
+        return this.promise;
     }
 
 }
