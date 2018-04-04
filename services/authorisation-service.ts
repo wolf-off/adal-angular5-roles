@@ -14,6 +14,12 @@ export class AuthorisationService {
     data: any = null;
     config: any = {};
 
+    public init(config) {
+        this.config = config;
+        this.adal.init(config);
+        this.getData();
+    }
+
     login() {
         this.adal.login();
     }
@@ -30,6 +36,13 @@ export class AuthorisationService {
         return this.adal.userInfo;
     }
 
+    public hasRole(role: string): Promise<boolean> {
+        return this.getRoles().then(roles => roles.some(r => r === role));
+    }
+    public hasPrivilege(privilege: string): Promise<boolean> {
+        return this.getPrivileges().then(privileges => privileges.some(p => p === privilege));
+    }
+
     public getRoles(): Promise<Array<string>> {
         return this.getData().then(data => <Array<string>>data.map(r => r.RoleTag)
         );
@@ -38,12 +51,6 @@ export class AuthorisationService {
         return this.getData().then(data => {
             return data.reduce((acc, value) => { return acc.concat(value.Privileges.map(p => p.PrivilegeTag)) }, []);
         });
-    }
-
-    public init(config) {
-        this.config = config;
-        this.adal.init(config);
-        this.getData();
     }
 
     public getData(): Promise<any> {
