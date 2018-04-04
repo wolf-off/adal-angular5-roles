@@ -1,7 +1,5 @@
-import { Injectable, Output, EventEmitter } from '@angular/core';
-import { promise } from 'protractor';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { resolve } from 'path';
 import { AdalService } from './adal-service';
 
 @Injectable()
@@ -68,17 +66,14 @@ export class AuthorisationService {
 
         let promise = new Promise<Array<string>>(function (resolve, reject) {
 
-            //ser.acquireToken('https://honidentitydev.onmicrosoft.com/dev-int-allegrettoapi/', (err, token) => {
             let headers = new HttpHeaders();
-            // headers = headers.set('Authorization', 'Bearer ' + token);
-            headers = headers.set('Ocp-Apim-Subscription-Key', '138ef26998ff483baca6c2818dcd2c6c');
-            headers = headers.set('OrganizationId', 'Man63655995602947');
+            headers = headers.set('Ocp-Apim-Subscription-Key', that.config.ocpApimSubscriptionKey);
+            headers = headers.set('OrganizationId', that.config.organizationId);
             headers = headers.set('Accept', '*/*');
-            that.http.get("https://devintallegretto.azure-api.net/portal/v1/api/User/RolesAndPrivileges/Man63655995602947", { headers: headers })
+            that.http.get(that.config.getRoleUrl, { headers: headers })
                 .subscribe(data => {
                     resolve(<Array<string>>((<any>data).Result));
                 });
-            //});
         });
         return promise;
     }
