@@ -1,27 +1,61 @@
-# AdalAngular5RoleApp
+# Description
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
+This is module of angular 5 destributed as folder.
+Modul based on adal.js library and support authorization throw receiving roles and privileges throw http request.
 
-## Development server
+# Install
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+```
+npm install ccs-security-ng5
+```
 
-## Code scaffolding
+## Integrate to project
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+add module to ts compiling paths
+```json
+  "include": [
+    "src/**/*",
+    "node_modules/ccs-security-ng5/authorisation.module.ts"
+  ]
+```
+add module to app
+```ts
+import { AuthorisationModule } from 'ccs-security-ng5/authorisation.module';
+```
 
-## Build
+```ts
+@NgModule({
+...
+imports: [
+    ...
+        AuthorisationModule
+    ],
+...
+```
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+## Initialize
+```ts
+import { AuthorisationService } from 'ccs-security-ng5/authorisation.module';
+...
+export class AppComponent {
+    constructor(service: AuthorisationService) {
+        service.init({
+            redirectUrl: '<url>',
+            tenant: '<guid>',
+            clientId: '<guid>',
+            redirectUri: '<url>',
+            postLogoutRedirectUri: '<url>',
+            endpoints: {
+            '<url>': '<unic url or guid>',
+            '<url>': '<unic url or guid>'
+            },
+            ocpApimSubscriptionKey: '<id>',
+            organizationId: '<id>',
+            getRoleUrl: '<url>'
+        }
+    }
+    ...
+}
+```
 
-## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
