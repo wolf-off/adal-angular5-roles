@@ -46,8 +46,8 @@ export class AppComponent {
             redirectUri: '<url>',
             postLogoutRedirectUri: '<url>',
             endpoints: {
-            '<url>': '<unic url or guid>',
-            '<url>': '<unic url or guid>'
+            '<url>': '<unique url or guid>',
+            '<url>': '<unique url or guid>'
             },
             ocpApimSubscriptionKey: '<id>',
             organizationId: '<id>',
@@ -56,6 +56,50 @@ export class AppComponent {
     }
     ...
 }
+```
+
+## Guard
+
+AuthorisationGuard is protecting pages of app
+
+```ts
+import { AuthorisationGuard } from 'ccs-security-ng5/authorisation.module';
+
+const siteRouting: ModuleWithProviders = RouterModule.forChild([
+    {
+        path: '<url>',        
+        canActivate: [AuthorisationGuard],
+        data: {
+            privileges: ['read'],
+            roles:['admin']
+        }
+    }
+]);
+
+@NgModule({
+    imports: [
+        siteRouting,
+        ...
+```
+
+## Interceptor
+
+AuthorisationInterceptor add access token to all requests described in config of module (endpoints section)
+
+```ts
+import { AuthorisationInterceptor } from 'ccs-security-ng5/authorisation.module';
+
+@NgModule({
+    ...
+    providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthorisationInterceptor,
+            multi: true
+        }
+    ]
+    ...
+})
 ```
 
 
